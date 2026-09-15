@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SDG Complete Curriculum Mastery: 90-Item Active Recall Portal</title>
+  <style>
+    :root {
+      --primary: #065f46;
+      --primary-light: #059669;
+      --bg: #f0fdf4;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --border: #cbd5e1;
+      --correct-bg: #dcfce7;
+      --correct-border: #16a34a;
+      --correct-text: #15803d;
+      --wrong-bg: #fee2e2;
+      --wrong-border: #dc2626;
+      --wrong-text: #b91c1c;
+      --radius: 8px;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #0d9488 100%);
+      color: white;
+      padding: 2.25rem 1.5rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      opacity: 0.92;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .sticky-score {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #064e3b;
+      color: white;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      font-size: 0.92rem;
+    }
+
+    .shuffle-badges {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .badge {
+      background: #059669;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .badge-alt {
+      background: #0284c7;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto 4rem;
+      padding: 0 1rem;
+    }
+
+    #top-reviewer-panel {
+      display: none;
+      background: #fffbeb;
+      border: 2px solid #eab308;
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    #top-reviewer-panel.show {
+      display: block;
+    }
+
+    .reviewer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #fef08a;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .reviewer-header h2 {
+      font-size: 1.15rem;
+      color: #854d0e;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .reviewer-badge {
+      background: #dc2626;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+    }
+
+    .missed-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .missed-review-card {
+      background: #ffffff;
+      border: 1px solid #fde047;
+      border-left: 5px solid #dc2626;
+      border-radius: 6px;
+      padding: 0.85rem 1rem;
+      font-size: 0.88rem;
+    }
+
+    .missed-review-card .tag {
+      font-weight: 800;
+      font-size: 0.75rem;
+      color: #b91c1c;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+
+    .missed-review-card .question-title {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+
+    .missed-review-card .study-text {
+      color: #713f12;
+      background: #fefce8;
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+      line-height: 1.45;
+    }
+
+    .quiz-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+
+    .card-meta {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: #d1fae5;
+      color: #065f46;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      margin-bottom: 0.45rem;
+      text-transform: uppercase;
+    }
+
+    .q-text {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .quiz-btn {
+      padding: 0.7rem 0.9rem;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 0.9rem;
+      transition: all 0.15s ease-in-out;
+      line-height: 1.4;
+    }
+
+    .quiz-btn:hover:not(:disabled) {
+      background: #e2e8f0;
+    }
+
+    .quiz-btn.correct {
+      background-color: var(--correct-bg) !important;
+      border-color: var(--correct-border) !important;
+      color: var(--correct-text) !important;
+      font-weight: 700;
+    }
+
+    .quiz-btn.wrong {
+      background-color: var(--wrong-bg) !important;
+      border-color: var(--wrong-border) !important;
+      color: var(--wrong-text) !important;
+    }
+
+    .rationale {
+      display: none;
+      margin-top: 0.85rem;
+      padding: 0.85rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      background: #f8fafc;
+      border-left: 4px solid var(--primary-light);
+    }
+
+    .rationale.show {
+      display: block;
+    }
+
+    .rationale strong {
+      color: var(--primary);
+    }
+
+    .study-review-box {
+      display: none;
+      margin-top: 0.75rem;
+      padding: 0.85rem;
+      background: #fffbeb;
+      border: 1px solid #fef08a;
+      border-left: 4px solid #eab308;
+      border-radius: 6px;
+      font-size: 0.86rem;
+      color: #713f12;
+    }
+
+    .study-review-box.show {
+      display: block;
+    }
+
+    .study-review-box strong {
+      color: #854d0e;
+      display: block;
+      margin-bottom: 0.25rem;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+
+    footer {
+      background: #064e3b;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Sustainable Development Goals: Complete 90-Item Curriculum Mastery</h1>
+    <p>100% Multiple Choice Portal covering all 90 concepts across Topic 1 (SDG Architecture), Topic 2 (SDG 1 Poverty), and Topic 3 (SDG 2 Food Security). Incorrect answers automatically populate the Top Reviewer panel.</p>
+  </header>
+
+  <div class="sticky-score">
+    <div>
+      <span>Completed: <strong id="answered-count">0</strong> / 90</span>
+      <span style="margin-left: 1.5rem;">Score: <strong id="score-display">0</strong> / 90 (<strong id="score-pct">0%</strong>)</span>
+    </div>
+    <div class="shuffle-badges">
+      <span class="badge">90 Items Complete</span>
+      <span class="badge badge-alt">Live Top Reviewer</span>
+    </div>
+  </div>
+
+  <main>
+    <section id="top-reviewer-panel">
+      <div class="reviewer-header">
+        <h2>Target Reviewer: Missed Concepts (<span id="missed-count">0</span>)</h2>
+        <span class="reviewer-badge">Action Required</span>
+      </div>
+      <p style="font-size: 0.86rem; color: #713f12; margin-bottom: 0.85rem;">
+        Review these foundational curriculum concepts for questions you answered incorrectly.
+      </p>
+      <div class="missed-items-list" id="missed-items-container"></div>
+    </section>
+
+    <div id="quiz-mount"></div>
+  </main>
+
+  <footer>
+    <p>Complete SDG Curriculum Testing Portal • Topics 1, 2, and 3 (All 90 Concepts Included)</p>
+  </footer>
+
+  <script>
+    const rawQuestions = [
+      {
+        id: "t1_c1",
+        meta: "Topic 1 • Concept 1",
+        text: "What fundamental relationship does sustainable development recognize regarding human well-being, economic progress, social justice, and environmental protection?",
+        options: [
+          { text: "They cannot be pursued separately and require an interconnected framework.", correct: true },
+          { text: "Economic growth must be fully achieved before considering environmental protections.", correct: false },
+          { text: "Environmental protection is strictly optional for low-income economies.", correct: false },
+          { text: "Social justice can be maintained independently of economic policies.", correct: false }
+        ],
+        rationale: "Topic 1, Concept 1 notes that sustainable development recognizes that human well-being, economic progress, social justice, and environmental protection cannot be pursued separately[cite: 2].",
+        studySection: "Study Topic 1, Concept 1: Shared Global Commitment. The SDGs establish a common framework addressing interconnected social, economic, and environmental concerns via collective action[cite: 2]."
+      },
+      {
+        id: "t1_c2",
+        meta: "Topic 1 • Concept 2",
+        text: "What was the landmark outcome of the 1992 Earth Summit in Rio de Janeiro attended by more than 178 countries?",
+        options: [
+          { text: "Agenda 21", correct: true },
+          { text: "The Millennium Declaration", correct: false },
+          { text: "The Sendai Framework", correct: false },
+          { text: "The Paris Agreement", correct: false }
+        ],
+        rationale: "Topic 1, Concept 2 notes that the 1992 Earth Summit in Rio de Janeiro brought together over 178 countries and produced Agenda 21[cite: 2].",
+        studySection: "Study Topic 1, Concept 2: Agenda 21 (1992). Established a broad global plan for international cooperation to improve human lives while protecting the environment[cite: 2]."
+      },
+      {
+        id: "t1_c3",
+        meta: "Topic 1 • Concept 3",
+        text: "How many Millennium Development Goals (MDGs) emerged from the Millennium Declaration adopted in 2000?",
+        options: [
+          { text: "Eight (8)", correct: true },
+          { text: "Ten (10)", correct: false },
+          { text: "Seventeen (17)", correct: false },
+          { text: "Twelve (12)", correct: false }
+        ],
+        rationale: "Topic 1, Concept 3 indicates that the Millennium Declaration adopted in 2000 led to eight Millennium Development Goals[cite: 2].",
+        studySection: "Study Topic 1, Concept 3: The MDGs (2000). The 8 MDGs concentrated international resources and attention on extreme poverty and critical human development priorities[cite: 2]."
+      },
+      {
+        id: "t1_c4",
+        meta: "Topic 1 • Concept 4",
+        text: "What major global milestone was achieved under the MDGs, alongside leaving significant unfinished development business?",
+        options: [
+          { text: "Lifting more than one billion people out of extreme poverty", correct: true },
+          { text: "Completely eliminating global carbon emissions", correct: false },
+          { text: "Ending all armed conflict across member states", correct: false },
+          { text: "Achieving 100% tertiary university completion globally", correct: false }
+        ],
+        rationale: "Topic 1, Concept 4 states the MDGs helped lift over one billion people from extreme poverty and expanded girls' education, but progress remained uneven[cite: 2].",
+        studySection: "Study Topic 1, Concept 4: MDG Achievements & Unfinished Business. While extreme poverty dropped by over 1 billion, deep inequalities persisted across regions[cite: 2]."
+      },
+      {
+        id: "t1_c5",
+        meta: "Topic 1 • Concept 5",
+        text: "What was a major operational focus reaffirmed at the 2002 World Summit on Sustainable Development in Johannesburg?",
+        options: [
+          { text: "Placing greater emphasis on multilateral partnerships as instruments for development", correct: true },
+          { text: "Abolishing all foreign direct investment rules", correct: false },
+          { text: "Terminating the 1992 Rio commitments", correct: false },
+          { text: "Restricting development aid strictly to bilateral arrangements", correct: false }
+        ],
+        rationale: "Topic 1, Concept 5 states the 2002 Johannesburg summit reaffirmed poverty eradication commitments and placed greater emphasis on multilateral partnerships[cite: 2].",
+        studySection: "Study Topic 1, Concept 5: Johannesburg (2002). Reasserted environmental protection and poverty eradication while elevating multi-stakeholder partnerships[cite: 2]."
+      },
+      {
+        id: "t1_c6",
+        meta: "Topic 1 • Concept 6",
+        text: "What outcome document was adopted at Rio+20 in 2012 that formally initiated the development of the SDGs?",
+        options: [
+          { text: "The Future We Want", correct: true },
+          { text: "The Millennium Compact", correct: false },
+          { text: "The Brundtland Directive", correct: false },
+          { text: "Our Common Habitat", correct: false }
+        ],
+        rationale: "Topic 1, Concept 6 states that at Rio+20 in 2012, Member States adopted 'The Future We Want' and initiated the SDG development process[cite: 2].",
+        studySection: "Study Topic 1, Concept 6: Rio+20 (2012). 'The Future We Want' launched the intergovernmental process to transition from the expiring MDGs to the comprehensive SDGs[cite: 2]."
+      },
+      {
+        id: "t1_c7",
+        meta: "Topic 1 • Concept 7",
+        text: "What body was established by the UN General Assembly in 2013 to prepare the SDG proposal culminating in September 2015?",
+        options: [
+          { text: "A 30-member Open Working Group", correct: true },
+          { text: "A 50-member Council of Finance Ministers", correct: false },
+          { text: "An independent commercial consulting panel", correct: false },
+          { text: "A 15-member Military Security Taskforce", correct: false }
+        ],
+        rationale: "Topic 1, Concept 7 highlights that in 2013, the UN General Assembly created a 30-member Open Working Group to prepare the SDG proposal[cite: 2].",
+        studySection: "Study Topic 1, Concept 7: Development of the SDGs. Negotiations led by the 30-member Open Working Group culminated in the adoption of the 17 SDGs in September 2015[cite: 2]."
+      },
+      {
+        id: "t1_c8",
+        meta: "Topic 1 • Concept 8",
+        text: "Which group of agreements collectively strengthened the international architecture of sustainable development in 2015?",
+        options: [
+          { text: "Sendai Framework, Addis Ababa Action Agenda, 2030 Agenda, and Paris Agreement", correct: true },
+          { text: "Agenda 21, Kyoto Protocol, Montreal Protocol, and Rome Statute", correct: false },
+          { text: "Bretton Woods Accords, GATT, Marshall Plan, and Treaty of Versailles", correct: false },
+          { text: "Washington Consensus, NAFTA, Maastricht Treaty, and Geneva Convention", correct: false }
+        ],
+        rationale: "Topic 1, Concept 8 explicitly lists the Sendai Framework, Addis Ababa Action Agenda, 2030 Agenda, and Paris Agreement as the landmark agreements of 2015[cite: 2].",
+        studySection: "Study Topic 1, Concept 8: Landmark 2015 Agreements. Together, these agreements linked disaster risk (Sendai), financing (Addis Ababa), development (2030 Agenda), and climate (Paris)[cite: 2]."
+      },
+      {
+        id: "t1_c9",
+        meta: "Topic 1 • Concept 9",
+        text: "How does the universal applicability of the 2030 Agenda differ from the earlier MDGs?",
+        options: [
+          { text: "Its 17 goals call for action by both developed and developing countries.", correct: true },
+          { text: "Its mandates apply exclusively to low-income nations in the Global South.", correct: false },
+          { text: "Developed nations are completely exempt from domestic reporting requirements.", correct: false },
+          { text: "Action is assigned solely to private multinational corporations.", correct: false }
+        ],
+        rationale: "Topic 1, Concept 9 states that the 17 goals call for action by both developed and developing countries rather than assigning sustainable development solely to poorer nations[cite: 2].",
+        studySection: "Study Topic 1, Concept 9: The 2030 Agenda. Universal scope: all countries, regardless of income level, must implement policies to achieve the goals domestically and globally[cite: 2]."
+      },
+      {
+        id: "t1_c10",
+        meta: "Topic 1 • Concept 10",
+        text: "What does the defining principle 'Leave No One Behind' require in sustainable development policy?",
+        options: [
+          { text: "Special attention to people and communities experiencing poverty, exclusion, and vulnerability", correct: true },
+          { text: "Allocating equal public resources to all citizens regardless of need", correct: false },
+          { text: "Prioritizing urban economic hubs to maximize gross GDP growth first", correct: false },
+          { text: "Restricting social programs to employed individuals paying direct income taxes", correct: false }
+        ],
+        rationale: "Topic 1, Concept 10 notes that 'Leave no one behind' requires special attention to people and communities who experience poverty, exclusion, inequality, or vulnerability[cite: 2].",
+        studySection: "Study Topic 1, Concept 10: Leave No One Behind. Development must reach the most marginalized first, dismantling discriminatory legal, geographic, and economic barriers[cite: 2]."
+      },
+      {
+        id: "t1_c11",
+        meta: "Topic 1 • Concept 11",
+        text: "Why does the 2030 Agenda emphasize the 'Interdependence of the SDGs'?",
+        options: [
+          { text: "Ending poverty cannot be separated from health, education, equality, jobs, and ecology.", correct: true },
+          { text: "Countries are allowed to choose only one single goal to implement.", correct: false },
+          { text: "Progress in one goal will automatically fix all other goals with no extra policy.", correct: false },
+          { text: "Each goal is designed to be pursued by completely separate agencies in isolation.", correct: false }
+        ],
+        rationale: "Topic 1, Concept 11 states that ending poverty cannot be separated from health, education, environment, and jobs, encouraging integrated solutions[cite: 2].",
+        studySection: "Study Topic 1, Concept 11: Interdependence. Development issues cannot be addressed as isolated concerns; solutions must integrate social, economic, and environmental trade-offs[cite: 2]."
+      },
+      {
+        id: "t1_c12",
+        meta: "Topic 1 • Concept 12",
+        text: "What did early implementation gains in child mortality, electricity access, and disease control demonstrate?",
+        options: [
+          { text: "That coordinated development interventions can generate measurable gains", correct: true },
+          { text: "That sustainable development can be achieved without international financing", correct: false },
+          { text: "That climate change has no impact on human development metrics", correct: false },
+          { text: "That poverty was permanently eradicated before 2020", correct: false }
+        ],
+        rationale: "Topic 1, Concept 12 explains that early improvements in poverty, disease, energy, and employment proved coordinated development interventions generate real gains[cite: 2].",
+        studySection: "Study Topic 1, Concept 12: Early SDG Progress. Coordinated global and domestic action produces measurable improvements when backed by policies and resources[cite: 2]."
+      },
+      {
+        id: "t1_c13",
+        meta: "Topic 1 • Concept 13",
+        text: "What major shocks exposed the fragility of early SDG progress after 2019?",
+        options: [
+          { text: "COVID-19, the war in Ukraine, and climate-related disasters", correct: true },
+          { text: "The collapse of global telecommunications networks", correct: false },
+          { text: "The immediate cessation of international sea freight shipping", correct: false },
+          { text: "The total dissolution of the United Nations General Assembly", correct: false }
+        ],
+        rationale: "Topic 1, Concept 13 highlights that COVID-19, the war in Ukraine, and climate disasters intensified problems and reversed gains across several goals[cite: 2].",
+        studySection: "Study Topic 1, Concept 13: Fragility of Progress. Unanticipated exogenous shocks can reverse years of development progress if systemic resilience is lacking[cite: 2]."
+      },
+      {
+        id: "t1_c14",
+        meta: "Topic 1 • Concept 14",
+        text: "At the midpoint toward 2030, what was the status of the assessable SDG targets?",
+        options: [
+          { text: "About 50% showed moderate/severe deviations, and over 30% stalled or regressed.", correct: true },
+          { text: "Over 95% of targets were completely achieved ahead of schedule.", correct: false },
+          { text: "Every target was on track except for renewable energy adoption.", correct: false },
+          { text: "All 17 goals had achieved their 2030 numerical baselines.", correct: false }
+        ],
+        rationale: "Topic 1, Concept 14 reveals that approximately half of targets showed moderate/severe deviations and over 30% had stalled or regressed below their 2015 baseline[cite: 2].",
+        studySection: "Study Topic 1, Concept 14: Midpoint Assessment. The 2023 midpoint evaluation revealed significant derailments, demanding an urgent acceleration of global commitments[cite: 2]."
+      },
+      {
+        id: "t1_c15",
+        meta: "Topic 1 • Concept 15",
+        text: "According to midpoint trends, what historical regression was observed in global hunger?",
+        options: [
+          { text: "Hunger returned to levels not seen since 2005.", correct: true },
+          { text: "Caloric intake reached universal adequacy worldwide.", correct: false },
+          { text: "Hunger was fully confined to high-income economies.", correct: false },
+          { text: "Food insecurity had dropped to absolute zero in rural areas.", correct: false }
+        ],
+        rationale: "Topic 1, Concept 15 states that hunger returned to levels not seen since 2005, showing the direct link between economic vulnerability and food insecurity[cite: 2].",
+        studySection: "Study Topic 1, Concept 15: Continuing Poverty & Hunger. Hundreds of millions face extreme poverty by 2030, with hunger reversing back nearly two decades[cite: 2]."
+      },
+      {
+        id: "t1_c16",
+        meta: "Topic 1 • Concept 16",
+        text: "Under SDG 4, what major threat to sustainable development was highlighted at the midpoint?",
+        options: [
+          { text: "Underinvestment and learning losses leaving millions out of school or without basic literacy", correct: true },
+          { text: "An oversupply of fully funded primary schools in remote areas", correct: false },
+          { text: "A global mandate abolishing traditional university degree programs", correct: false },
+          { text: "Excessive national budgets dedicated exclusively to public libraries", correct: false }
+        ],
+        rationale: "Topic 1, Concept 16 warns of millions of children remaining out of school and many leaving without basic literacy due to underinvestment and learning losses[cite: 2].",
+        studySection: "Study Topic 1, Concept 16: Education Crisis (SDG 4). Educational underinvestment undermines human capital, economic opportunity, and social equity for generations[cite: 2]."
+      },
+      {
+        id: "t1_c17",
+        meta: "Topic 1 • Concept 17",
+        text: "Why is gender equality (SDG 5) essential for advancing sustainable development?",
+        options: [
+          { text: "Progress requires removing discriminatory structures embedded in laws and institutions.", correct: true },
+          { text: "Gender inequality is fully resolved through cash transfers alone.", correct: false },
+          { text: "Women already hold 90% of global ministerial and corporate positions.", correct: false },
+          { text: "Gender rights operate completely independently of economic growth.", correct: false }
+        ],
+        rationale: "Topic 1, Concept 17 states gender inequality is deeply embedded in institutions, requiring structural legal removal and expanded rights for women and girls[cite: 2].",
+        studySection: "Study Topic 1, Concept 17: Gender Equality Challenge. Dismantling legal, cultural, and institutional discrimination against women is a prerequisite for total development[cite: 2]."
+      },
+      {
+        id: "t1_c18",
+        meta: "Topic 1 • Concept 18",
+        text: "How does climate change (SDG 13) impact the broader 2030 Agenda?",
+        options: [
+          { text: "It threatens achievements across development goals and places vulnerable groups at risk.", correct: true },
+          { text: "It only affects oceanic marine life with zero impact on terrestrial poverty.", correct: false },
+          { text: "It accelerates agricultural crop yields in all drought-stricken nations.", correct: false },
+          { text: "It eliminates poverty by opening new Arctic industrial maritime routes.", correct: false }
+        ],
+        rationale: "Topic 1, Concept 18 explains climate change threatens multiple goals, requiring urgent action to limit warming and promote climate justice[cite: 2].",
+        studySection: "Study Topic 1, Concept 18: Climate Change & Development. Unchecked warming destroys infrastructure, water supplies, and agricultural harvests, hitting the poorest hardest[cite: 2]."
+      },
+      {
+        id: "t1_c19",
+        meta: "Topic 1 • Concept 19",
+        text: "What dual challenge defines energy access and the green transition under SDG 7 and SDG 13?",
+        options: [
+          { text: "Millions lack electricity while billions rely on polluting fuels for cooking.", correct: true },
+          { text: "Energy generation has exceeded planetary consumption capacities.", correct: false },
+          { text: "All fossil fuel extraction was permanently phased out in 2018.", correct: false },
+          { text: "Renewable energy technologies are legally prohibited in rural areas.", correct: false }
+        ],
+        rationale: "Topic 1, Concept 19 states millions lack electricity while billions depend on polluting cooking fuels, making clean energy both a development and climate priority[cite: 2].",
+        studySection: "Study Topic 1, Concept 19: Energy Access & Green Transition. Clean power expansion must solve energy poverty while simultaneously cutting greenhouse gas emissions[cite: 2]."
+      },
+      {
+        id: "t1_c20",
+        meta: "Topic 1 • Concept 20",
+        text: "How does environmental degradation of biodiversity (SDGs 14 & 15) undermine human development?",
+        options: [
+          { text: "Human health and livelihoods depend directly on functioning natural ecosystems.", correct: true },
+          { text: "Natural ecosystems operate with zero connection to human economies.", correct: false },
+          { text: "Deforestation has been proven to permanently eliminate viral outbreaks.", correct: false },
+          { text: "Species extinctions have no economic or medicinal consequences for humans.", correct: false }
+        ],
+        rationale: "Topic 1, Concept 20 notes deforestation and threats to species show that environmental decline directly undermines long-term human well-being and health[cite: 2].",
+        studySection: "Study Topic 1, Concept 20: Nature & Human Well-being. Forests, soils, and oceans provide vital ecosystem services: freshwater, food, disease regulation, and climate stability[cite: 2]."
+      },
+      {
+        id: "t1_c21",
+        meta: "Topic 1 • Concept 21",
+        text: "Why is inequality considered a core barrier in sustainable development (SDG 10)?",
+        options: [
+          { text: "Developing nations and vulnerable groups bear disproportionate burdens from global shocks.", correct: true },
+          { text: "Economic setbacks are distributed with exact statistical equality across all nations.", correct: false },
+          { text: "Wealthy nations suffer the highest rates of childhood malnutrition.", correct: false },
+          { text: "Global financial crises only impact high-income corporate executives.", correct: false }
+        ],
+        rationale: "Topic 1, Concept 21 states that failures in SDG progress disproportionately harm developing countries and the poorest populations during crises[cite: 2].",
+        studySection: "Study Topic 1, Concept 21: Global Inequality in SDGs. Structural inequalities leave low-income states with less fiscal space and fewer safety nets to absorb external shocks[cite: 2]."
+      },
+      {
+        id: "t1_c22",
+        meta: "Topic 1 • Concept 22",
+        text: "What is the primary developmental function of expanding social protection and basic services?",
+        options: [
+          { text: "Protecting vulnerable populations while boosting their capacity for economic participation", correct: true },
+          { text: "Encouraging citizens to abandon formal employment permanently", correct: false },
+          { text: "Replacing all private market commerce with state rationing", correct: false },
+          { text: "Eliminating the need for public education and healthcare budgets", correct: false }
+        ],
+        rationale: "Topic 1, Concept 22 explains social protection and basic services safeguard the vulnerable while strengthening their ability to participate socially and economically[cite: 2].",
+        studySection: "Study Topic 1, Concept 22: Social Protection Floors. Social safety nets prevent catastrophic poverty falls during illness, unemployment, or natural disasters[cite: 2]."
+      },
+      {
+        id: "t1_c23",
+        meta: "Topic 1 • Concept 23",
+        text: "Where must sustainable development be integrated for successful implementation (SDG 16)?",
+        options: [
+          { text: "Into national planning, public budgets, oversight systems, and local government action", correct: true },
+          { text: "Exclusively into international academic research journals", correct: false },
+          { text: "Only into private commercial marketing brochures", correct: false },
+          { text: "Solely within United Nations headquarters conference rooms", correct: false }
+        ],
+        rationale: "Topic 1, Concept 23 emphasizes that implementation depends on capable institutions and embedding SDGs into budgets, planning, and local government[cite: 2].",
+        studySection: "Study Topic 1, Concept 23: Institutional Capacity. Global goals must be localized: translated into national laws, municipal plans, and official public expenditure[cite: 2]."
+      },
+      {
+        id: "t1_c24",
+        meta: "Topic 1 • Concept 24",
+        text: "What international financial measures are required to support developing countries pursuing the SDGs?",
+        options: [
+          { text: "Affordable financing, debt relief/restructuring, and reforming the financial architecture", correct: true },
+          { text: "Doubling foreign debt interest rates to incentivize rapid repayment", correct: false },
+          { text: "Mandating that low-income nations finance all infrastructure via commercial loans", correct: false },
+          { text: "Banning international development banks from lending to poorer countries", correct: false }
+        ],
+        rationale: "Topic 1, Concept 24 stresses developing countries need adequate financing, debt restructuring, and reforms of international financial institutions[cite: 2].",
+        studySection: "Study Topic 1, Concept 24: Financing the SDGs. Overcoming sovereign debt traps requires concessionary capital and structural reform of multilateral lenders[cite: 2]."
+      },
+      {
+        id: "t1_c25",
+        meta: "Topic 1 • Concept 25",
+        text: "Why are multi-stakeholder partnerships (SDG 17) indispensable for achieving the 2030 Agenda?",
+        options: [
+          { text: "Governments alone lack the resources, reach, and innovation to achieve the goals.", correct: true },
+          { text: "The United Nations charter prohibits sovereign states from acting independently.", correct: false },
+          { text: "Civil society groups have formally replaced national legislative bodies.", correct: false },
+          { text: "Private businesses have been nationalized under global administration.", correct: false }
+        ],
+        rationale: "Topic 1, Concept 25 emphasizes that governments alone cannot achieve the 2030 Agenda; business, science, civil society, and youth must collaborate[cite: 2].",
+        studySection: "Study Topic 1, Concept 25: Partnerships (SDG 17). Translating commitments into action requires uniting public authority with private finance and civil society advocacy[cite: 2]."
+      },
+      {
+        id: "t1_c26",
+        meta: "Topic 1 • Concept 26",
+        text: "Why is high-quality data considered a fundamental foundation for SDG action?",
+        options: [
+          { text: "It allows identification of development gaps, progress tracking, and evidence-based decisions.", correct: true },
+          { text: "It allows governments to artificially conceal domestic poverty statistics.", correct: false },
+          { text: "It replaces the need for enacting municipal laws and social policies.", correct: false },
+          { text: "It is used solely for commercial advertising by international corporations.", correct: false }
+        ],
+        rationale: "Topic 1, Concept 26 highlights that reliable data identifies gaps, evaluates policy efficacy, and ensures accountability and evidence-based choices[cite: 2].",
+        studySection: "Study Topic 1, Concept 26: Data as Foundation. Without timely and disaggregated data, policymakers cannot know which communities are being left behind[cite: 2]."
+      },
+      {
+        id: "t1_c27",
+        meta: "Topic 1 • Concept 27",
+        text: "What major development occurred in the global SDG database between 2016 and 2023?",
+        options: [
+          { text: "The number of indicators contained in the database increased substantially.", correct: true },
+          { text: "All measurement indicators were replaced by subjective self-reporting surveys.", correct: false },
+          { text: "The database was privatized and placed behind a commercial paywall.", correct: false },
+          { text: "Indicators were reduced to only tracking gross domestic product.", correct: false }
+        ],
+        rationale: "Topic 1, Concept 27 records that indicators with reliable data expanded substantially between 2016 and 2023 alongside methodological standards[cite: 2].",
+        studySection: "Study Topic 1, Concept 27: Expansion of Monitoring. International statistical coordination improved comparability, accuracy, and usefulness of global SDG tracking[cite: 2]."
+      },
+      {
+        id: "t1_c28",
+        meta: "Topic 1 • Concept 28",
+        text: "What innovative, nontraditional data sources are increasingly combined with household surveys?",
+        options: [
+          { text: "Administrative records, satellite imagery, and citizen-generated data", correct: true },
+          { text: "Speculative stock exchange forecasts and commercial advertisements", correct: false },
+          { text: "Classified military dossiers and secret diplomatic cables", correct: false },
+          { text: "Personal private financial records without legal consent", correct: false }
+        ],
+        rationale: "Topic 1, Concept 28 states countries merge surveys with administrative records, earth observation/satellites, and citizen-generated data to fill gaps[cite: 2].",
+        studySection: "Study Topic 1, Concept 28: Data Innovation. Geospatial satellite data and local citizen reports provide real-time evidence for swift policy adjustments[cite: 2]."
+      },
+      {
+        id: "t1_c29",
+        meta: "Topic 1 • Concept 29",
+        text: "How does open and accessible official statistical data benefit society?",
+        options: [
+          { text: "It supports transparency, independent research, accountability, and public trust.", correct: true },
+          { text: "It allows state agencies to sell citizen data to multinational corporations.", correct: false },
+          { text: "It eliminates the need for independent academic research institutions.", correct: false },
+          { text: "It replaces legislative oversight committees with automated algorithms.", correct: false }
+        ],
+        rationale: "Topic 1, Concept 29 affirms that open data strengthens public transparency, research, informed policymaking, and democratic accountability[cite: 2].",
+        studySection: "Study Topic 1, Concept 29: Open Data & Accountability. Accessible official statistics allow citizens, journalists, and researchers to verify government performance[cite: 2]."
+      },
+      {
+        id: "t1_c30",
+        meta: "Topic 1 • Concept 30",
+        text: "What does Concept 30 conclude is required to achieve the 2030 Agenda?",
+        options: [
+          { text: "Coordinated, systemic transformation rather than isolated or incremental steps", correct: true },
+          { text: "Gradual, voluntary adjustments with no formal national targets", correct: false },
+          { text: "A complete abandonment of global environmental treaties", correct: false },
+          { text: "Relying strictly on market forces without government intervention", correct: false }
+        ],
+        rationale: "Topic 1, Concept 30 concludes that achieving the 2030 Agenda demands determination, solidarity, and coordinated transformation over incremental responses[cite: 2].",
+        studySection: "Study Topic 1, Concept 30: Collective Transformation. Sustainable development requires a deep transformation in energy, agriculture, finance, and social protection[cite: 2]."
+      },
+      {
+        id: "t2_c1",
+        meta: "Topic 2 • Concept 1",
+        text: "How does the 2030 Agenda frame the eradication of poverty under SDG 1?",
+        options: [
+          { text: "The greatest global challenge and an indispensable requirement for sustainable development", correct: true },
+          { text: "A secondary objective to be addressed only after industrialization is complete", correct: false },
+          { text: "A regional concern that low-income countries must handle on their own", correct: false },
+          { text: "An unavoidable reality of modern competitive free-market economies", correct: false }
+        ],
+        rationale: "Topic 2, Concept 1 notes that the 2030 Agenda identifies eradicating poverty in all its forms and dimensions as the greatest global challenge[cite: 3].",
+        studySection: "Study Topic 2, Concept 1: Poverty Eradication as Global Priority. SDG 1 calls for ending poverty everywhere in all its forms, not merely reducing extreme deprivation[cite: 3]."
+      },
+      {
+        id: "t2_c2",
+        meta: "Topic 2 • Concept 2",
+        text: "Why is poverty defined as a 'multidimensional' problem in sustainable development?",
+        options: [
+          { text: "It extends beyond insufficient income to deficits in health, education, and basic services.", correct: true },
+          { text: "It is determined solely by national daily wage currency statistics.", correct: false },
+          { text: "It has identical causes and manifestations across every single country.", correct: false },
+          { text: "It can be completely resolved in all contexts through a single uniform policy.", correct: false }
+        ],
+        rationale: "Topic 2, Concept 2 states poverty extends beyond income and varies across societies, meaning no single solution can be applied uniformly[cite: 3].",
+        studySection: "Study Topic 2, Concept 2: Multidimensional Poverty. Deprivation encompasses lack of clean water, health services, schooling, safety, and voice, not just monetary poverty[cite: 3]."
+      },
+      {
+        id: "t2_c3",
+        meta: "Topic 2 • Concept 3",
+        text: "What is the core mandate of SDG Target 1.1?",
+        options: [
+          { text: "Eradicate extreme poverty for all people everywhere by 2030", correct: true },
+          { text: "Reduce extreme poverty rates by 25% in urban centers only", correct: false },
+          { text: "Provide temporary food assistance during national election cycles", correct: false },
+          { text: "Maintain poverty rates at baseline 2000 levels", correct: false }
+        ],
+        rationale: "Topic 2, Concept 3 notes Target 1.1 calls for eradicating extreme poverty for all people everywhere by 2030, tracking sex, age, and geography[cite: 3].",
+        studySection: "Study Topic 2, Concept 3: Target 1.1 (Extreme Poverty). Focuses on totally ending extreme poverty (measured by international thresholds) worldwide by 2030[cite: 3]."
+      },
+      {
+        id: "t2_c4",
+        meta: "Topic 2 • Concept 4",
+        text: "What specific reduction is targeted under SDG Target 1.2 regarding national poverty definitions?",
+        options: [
+          { text: "Reduce by at least half the proportion of people living in poverty in all dimensions", correct: true },
+          { text: "Reduce national poverty rates by exactly 10% across all states", correct: false },
+          { text: "Eliminate national relative poverty entirely in G20 economies only", correct: false },
+          { text: "Freeze national poverty measurements to 2015 historical baselines", correct: false }
+        ],
+        rationale: "Topic 2, Concept 4 explains Target 1.2 seeks to reduce by at least half the proportion of men, women, and children in poverty according to national definitions[cite: 3].",
+        studySection: "Study Topic 2, Concept 4: Target 1.2 (National Definitions). Aims to cut multidimensional poverty by at least 50% based on each nation's own specific standards[cite: 3]."
+      },
+      {
+        id: "t2_c5",
+        meta: "Topic 2 • Concept 5",
+        text: "How do international commitments link poverty eradication with human dignity?",
+        options: [
+          { text: "Poverty is framed as inconsistent with human dignity, requiring more than raising income statistics.", correct: true },
+          { text: "Dignity is measured exclusively through per-capita GDP growth rates.", correct: false },
+          { text: "Human dignity is subordinate to corporate profit margins and trade surpluses.", correct: false },
+          { text: "Poverty is viewed as a personal moral failure rather than an institutional barrier.", correct: false }
+        ],
+        rationale: "Topic 2, Concept 5 states extreme poverty is framed as inconsistent with human dignity, involving expanding people's ability to live meaningful lives[cite: 3].",
+        studySection: "Study Topic 2, Concept 5: Poverty & Human Dignity. Anti-poverty policy is about human flourishing, personal autonomy, and security, not just tweaking economic charts[cite: 3]."
+      },
+      {
+        id: "t2_c6",
+        meta: "Topic 2 • Concept 6",
+        text: "What motivated the 2030 Agenda to address the unfinished business of the earlier MDGs?",
+        options: [
+          { text: "Previous progress was unevenly distributed, leaving persistent structural inequalities.", correct: true },
+          { text: "The MDGs were deemed a total failure with zero measurable achievements.", correct: false },
+          { text: "Developing nations requested an end to all multilateral poverty tracking.", correct: false },
+          { text: "Poverty was already eradicated in low-income nations before 2015.", correct: false }
+        ],
+        rationale: "Topic 2, Concept 6 points out that while MDGs brought gains, benefits were unevenly distributed, motivating the SDGs to finish the work[cite: 3].",
+        studySection: "Study Topic 2, Concept 6: Uneven Development Progress. Persistent inequalities between regions, genders, and rural-urban populations drove the comprehensive scope of SDG 1[cite: 3]."
+      },
+      {
+        id: "t2_c7",
+        meta: "Topic 2 • Concept 7",
+        text: "What is required to achieve sustainable poverty reduction under SDG 1 and SDG 8?",
+        options: [
+          { text: "Access to sustainable livelihoods, entrepreneurial opportunities, and productive resources", correct: true },
+          { text: "Indefinite reliance on emergency food relief boxes", correct: false },
+          { text: "Restricting informal workers from accessing formal commercial markets", correct: false },
+          { text: "Banning private microenterprises in rural villages", correct: false }
+        ],
+        rationale: "Topic 2, Concept 7 notes poverty reduction requires access to sustainable livelihoods, entrepreneurship, and resources for economic participation[cite: 3].",
+        studySection: "Study Topic 2, Concept 7: Sustainable Livelihoods. Empowering individuals with tools, capital, and market access allows them to generate durable, self-sustaining income[cite: 3]."
+      },
+      {
+        id: "t2_c8",
+        meta: "Topic 2 • Concept 8",
+        text: "Why is universal access to basic services central to poverty eradication?",
+        options: [
+          { text: "Deprivation involves lack of health, education, water, and sanitation, which income alone cannot fix.", correct: true },
+          { text: "Basic social services are provided solely to generate state tax revenues.", correct: false },
+          { text: "Universal access eliminates the need for any employment policies.", correct: false },
+          { text: "Access to basic services is exclusively relevant in wealthy urban cities.", correct: false }
+        ],
+        rationale: "Topic 2, Concept 8 states deprivation involves poor health, schooling, water, and sanitation, reducing vulnerabilities that income alone cannot address[cite: 3].",
+        studySection: "Study Topic 2, Concept 8: Universal Basic Services. Without public water, clinics, and schools, rising cash wages are wiped out by private emergency expenses[cite: 3]."
+      },
+      {
+        id: "t2_c9",
+        meta: "Topic 2 • Concept 9",
+        text: "What policy system is called for in SDG Target 1.3 to protect poor and vulnerable populations?",
+        options: [
+          { text: "Nationally appropriate social protection systems and measures, including floors", correct: true },
+          { text: "Mandatory corporate equity redistribution programs", correct: false },
+          { text: "Exclusive reliance on private charity organizations", correct: false },
+          { text: "Universal forced municipal labor camps", correct: false }
+        ],
+        rationale: "Topic 2, Concept 9 highlights Target 1.3 calling for nationally appropriate social protection floors covering children, the disabled, and the unemployed[cite: 3].",
+        studySection: "Study Topic 2, Concept 9: Target 1.3 (Social Protection). Social protection floors guarantee basic healthcare and income security throughout the human life cycle[cite: 3]."
+      },
+      {
+        id: "t2_c10",
+        meta: "Topic 2 • Concept 10",
+        text: "How does the 2030 Agenda view the role of people experiencing poverty in development actions?",
+        options: [
+          { text: "As active empowered participants in actions concerning their own development, not mere recipients", correct: true },
+          { text: "As passive recipients of state charity with no decision-making voice", correct: false },
+          { text: "As individuals who should be excluded from local community planning boards", correct: false },
+          { text: "As statistics to be managed solely by foreign non-governmental organizations", correct: false }
+        ],
+        rationale: "Topic 2, Concept 10 states poverty eradication must involve affected people and their organizations rather than treating them merely as aid recipients[cite: 3].",
+        studySection: "Study Topic 2, Concept 10: Empowerment. Agency and voice: poor communities must be co-designers and decision-makers in public anti-poverty strategies[cite: 3]."
+      },
+      {
+        id: "t2_c11",
+        meta: "Topic 2 • Concept 11",
+        text: "Why must anti-poverty strategies incorporate a strong gender dimension (SDG 5)?",
+        options: [
+          { text: "Poverty disproportionately affects women through unequal access to resources and security.", correct: true },
+          { text: "Women are legally barred from experiencing economic deprivation.", correct: false },
+          { text: "Gender has no measurable impact on household poverty vulnerability.", correct: false },
+          { text: "Social protection programs are restricted exclusively to male heads of household.", correct: false }
+        ],
+        rationale: "Topic 2, Concept 11 notes poverty disproportionately impacts women, requiring policies targeting unequal opportunities, resources, and economic security[cite: 3].",
+        studySection: "Study Topic 2, Concept 11: Poverty & Gender. Unequal property laws, wage gaps, and unpaid care work leave women far more vulnerable to severe deprivation[cite: 3]."
+      },
+      {
+        id: "t2_c12",
+        meta: "Topic 2 • Concept 12",
+        text: "What is guaranteed under SDG Target 1.4 regarding economic rights?",
+        options: [
+          { text: "Equal rights to economic resources, basic services, property ownership, inheritance, and finance", correct: true },
+          { text: "Free consumer electronics distributed annually by municipal governments", correct: false },
+          { text: "State nationalization of all private residential land and bank deposits", correct: false },
+          { text: "Guaranteed civil service positions for all adults regardless of qualification", correct: false }
+        ],
+        rationale: "Topic 2, Concept 12 specifies Target 1.4 seeks equal rights to economic resources, property, inheritance, technology, and financial services for the poor[cite: 3].",
+        studySection: "Study Topic 2, Concept 12: Target 1.4 (Equal Economic Rights). Ensures marginalized groups legally own assets, inherit family property, and access credit and technology[cite: 3]."
+      },
+      {
+        id: "t2_c13",
+        meta: "Topic 2 • Concept 13",
+        text: "How does SDG 1 monitor secure land tenure among vulnerable populations?",
+        options: [
+          { text: "By tracking legally recognized documentation and people's perceptions of tenure security", correct: true },
+          { text: "Solely by tracking satellite imaging of agricultural field boundaries", correct: false },
+          { text: "By measuring commercial real estate transactions in major capital cities", correct: false },
+          { text: "By calculating municipal property transfer tax receipts", correct: false }
+        ],
+        rationale: "Topic 2, Concept 13 notes SDG 1 monitors legally recognized documentation as well as people's perceptions of whether their land rights are secure[cite: 3].",
+        studySection: "Study Topic 2, Concept 13: Land & Property Rights. Secure tenure requires legal deeds and subjective protection from arbitrary displacement or land grabbing[cite: 3]."
+      },
+      {
+        id: "t2_c14",
+        meta: "Topic 2 • Concept 14",
+        text: "What is the primary developmental benefit of financial inclusion and microfinance under SDG 1?",
+        options: [
+          { text: "Broadening the means through which the poor participate in productive economic activity", correct: true },
+          { text: "Eliminating the need for central banks and sovereign national currencies", correct: false },
+          { text: "Replacing all public government expenditure on healthcare and primary schools", correct: false },
+          { text: "Encouraging high-interest debt cycles among rural farmers", correct: false }
+        ],
+        rationale: "Topic 2, Concept 14 states access to finance and microfinance broadens how poor and vulnerable groups participate in productive economic activity[cite: 3].",
+        studySection: "Study Topic 2, Concept 14: Financial Inclusion. Giving the poor access to savings, credit, and insurance enables entrepreneurship and cushions economic shocks[cite: 3]."
+      },
+      {
+        id: "t2_c15",
+        meta: "Topic 2 • Concept 15",
+        text: "Where is global extreme poverty predominantly concentrated?",
+        options: [
+          { text: "In rural areas, especially among smallholder farmers and their families", correct: true },
+          { text: "In major metropolitan banking and commercial districts", correct: false },
+          { text: "In high-income industrial export manufacturing zones", correct: false },
+          { text: "In coastal luxury tourist resorts", correct: false }
+        ],
+        rationale: "Topic 2, Concept 15 highlights that poverty has a strong rural dimension, closely linking poverty reduction with farming and rural incomes[cite: 3].",
+        studySection: "Study Topic 2, Concept 15: Rural Poverty Dimension. The vast majority of the extreme poor live in rural areas; boosting smallholder productivity is decisive[cite: 3]."
+      },
+      {
+        id: "t2_c16",
+        meta: "Topic 2 • Concept 16",
+        text: "What structural reality is demonstrated by persistent rural-urban inequalities?",
+        options: [
+          { text: "Geographical location shapes people's exposure to poverty and public service deprivation.", correct: true },
+          { text: "Urban citizens are legally barred from using public electricity networks.", correct: false },
+          { text: "Rural communities experience zero health disparities compared to capital cities.", correct: false },
+          { text: "Poverty is statistically nonexistent outside municipal city boundaries.", correct: false }
+        ],
+        rationale: "Topic 2, Concept 16 states disparities in power, health, water, and sanitation show how geographical location shapes exposure to deprivation[cite: 3].",
+        studySection: "Study Topic 2, Concept 16: Rural-Urban Disparities. Infrastructure deficits in rural zones trap populations in multidimensional poverty regardless of personal effort[cite: 3]."
+      },
+      {
+        id: "t2_c17",
+        meta: "Topic 2 • Concept 17",
+        text: "How does 'energy poverty' reinforce existing poverty traps in rural areas?",
+        options: [
+          { text: "Lack of modern energy reduces productivity, educational study, and health outcomes.", correct: true },
+          { text: "It causes immediate deflation in national agricultural commodity prices.", correct: false },
+          { text: "It prevents rural households from traveling abroad on commercial flights.", correct: false },
+          { text: "It permanently eliminates local artisan handicraft production.", correct: false }
+        ],
+        rationale: "Topic 2, Concept 17 explains inadequate energy access reduces productivity, education, and health, reinforcing poverty traps in rural areas[cite: 3].",
+        studySection: "Study Topic 2, Concept 17: Energy Poverty. Without clean lighting, power, and refrigeration, clinics fail, children cannot study, and businesses cannot scale[cite: 3]."
+      },
+      {
+        id: "t2_c18",
+        meta: "Topic 2 • Concept 18",
+        text: "Why must anti-poverty policies address rural water and sanitation gaps (SDG 6)?",
+        options: [
+          { text: "Living conditions directly drive health deficits that keep poor households economically trapped.", correct: true },
+          { text: "Water infrastructure is completely irrelevant to maternal and child survival.", correct: false },
+          { text: "Clean water can only be provided through private multinational corporations.", correct: false },
+          { text: "Rural households consume far less water than urban manufacturing plants.", correct: false }
+        ],
+        rationale: "Topic 2, Concept 18 notes rural disadvantages in water and sanitation show poverty must be tackled through living conditions alongside income[cite: 3].",
+        studySection: "Study Topic 2, Concept 18: Water, Sanitation & Poverty. Waterborne illnesses drain family savings and reduce work hours, proving cash relief alone cannot solve poverty[cite: 3]."
+      },
+      {
+        id: "t2_c19",
+        meta: "Topic 2 • Concept 19",
+        text: "What health disparity is highlighted between rural and urban populations under SDG 1 and SDG 3?",
+        options: [
+          { text: "Considerable disparities in skilled medical personnel availability during childbirth", correct: true },
+          { text: "Identical infant mortality rates across all geographic regions", correct: false },
+          { text: "A complete lack of pharmaceutical medicines in metropolitan centers", correct: false },
+          { text: "Universal access to advanced surgical theaters in remote villages", correct: false }
+        ],
+        rationale: "Topic 2, Concept 19 points out that access to health services differs considerably, including skilled personnel during childbirth in rural areas[cite: 3].",
+        studySection: "Study Topic 2, Concept 19: Health & Poverty. Expanding equitable rural healthcare and skilled birth attendance prevents catastrophic health shocks that cause poverty[cite: 3]."
+      },
+      {
+        id: "t2_c20",
+        meta: "Topic 2 • Concept 20",
+        text: "Why does raising agricultural productivity directly reduce both poverty (SDG 1) and hunger (SDG 2)?",
+        options: [
+          { text: "Because the extreme poor are heavily concentrated in farming and spend most income on food.", correct: true },
+          { text: "Because agricultural yields have no relationship to rural food security.", correct: false },
+          { text: "Because higher farm productivity forces rural workers to abandon their land.", correct: false },
+          { text: "Because hunger only occurs when international food imports are completely banned.", correct: false }
+        ],
+        rationale: "Topic 2, Concept 20 states extreme poverty and hunger are closely linked in rural areas, so raising productivity cuts both challenges together[cite: 3].",
+        studySection: "Study Topic 2, Concept 20: Poverty & Hunger Link. Higher smallholder output boosts family nutrition while generating surplus crops to sell for disposable household income[cite: 3]."
+      },
+      {
+        id: "t2_c21",
+        meta: "Topic 2 • Concept 21",
+        text: "Why does SDG 1 extend beyond current poverty to consider 'Vulnerability to Shocks'?",
+        options: [
+          { text: "The poor are particularly exposed to climate disasters, economic crises, and health emergencies.", correct: true },
+          { text: "Shocks only affect wealthy households with large stock market portfolios.", correct: false },
+          { text: "Vulnerable populations are completely insulated from global market volatility.", correct: false },
+          { text: "Economic disruptions have no impact on household poverty rates.", correct: false }
+        ],
+        rationale: "Topic 2, Concept 21 explains the poor are highly vulnerable to extreme climate events and economic shocks, requiring capacity to withstand disruptions[cite: 3].",
+        studySection: "Study Topic 2, Concept 21: Vulnerability to Shocks. Achieving sustainable poverty reduction requires making poor households resilient so shocks do not drag them back down[cite: 3]."
+      },
+      {
+        id: "t2_c22",
+        meta: "Topic 2 • Concept 22",
+        text: "What proactive principle guides SDG Target 1.5 regarding disaster resilience?",
+        options: [
+          { text: "Focusing on disaster-risk reduction rather than repeatedly restoring communities after losses occur", correct: true },
+          { text: "Waiting for disasters to happen before allocating any public funding", correct: false },
+          { text: "Relocating all coastal populations permanently to inland urban centers", correct: false },
+          { text: "Relying exclusively on international emergency food drops", correct: false }
+        ],
+        rationale: "Topic 2, Concept 22 emphasizes Target 1.5 seeks disaster-risk reduction to build resilience rather than repeatedly rebuilding after disasters[cite: 3].",
+        studySection: "Study Topic 2, Concept 22: Target 1.5 (Disaster Resilience). Investing in flood walls, early warnings, and shock-responsive safety nets saves lives and financial resources[cite: 3]."
+      },
+      {
+        id: "t2_c23",
+        meta: "Topic 2 • Concept 23",
+        text: "Why does SDG 1 emphasize disaster-risk reduction strategies at the local government level?",
+        options: [
+          { text: "Resilience must operate in communities where disasters and poverty are directly experienced.", correct: true },
+          { text: "National environmental ministries have been formally abolished under the SDGs.", correct: false },
+          { text: "Local governments are the sole recipients of international climate finance.", correct: false },
+          { text: "Climate-related weather events never cross provincial or municipal boundaries.", correct: false }
+        ],
+        rationale: "Topic 2, Concept 23 notes Target 1.5 includes local government disaster strategies because resilience must reach frontline communities[cite: 3].",
+        studySection: "Study Topic 2, Concept 23: Local Disaster-Risk Reduction. Municipal zoning, local drainage, and neighborhood shelters determine whether poor communities survive shocks[cite: 3]."
+      },
+      {
+        id: "t2_c24",
+        meta: "Topic 2 • Concept 24",
+        text: "Why does Concept 24 reject a single uniform model for national poverty strategies?",
+        options: [
+          { text: "Because poverty has different causes and manifestations across unique national contexts.", correct: true },
+          { text: "Because international institutions refuse to share proven anti-poverty methods.", correct: false },
+          { text: "Because national governments are prohibited from studying international examples.", correct: false },
+          { text: "Because poverty is an entirely psychological condition with no economic factors.", correct: false }
+        ],
+        rationale: "Topic 2, Concept 24 states that because poverty's causes and forms vary, countries require tailored strategies rather than one uniform model[cite: 3].",
+        studySection: "Study Topic 2, Concept 24: Country-Specific Strategies. International cooperation must support customized domestic plans that reflect local geography and institutions[cite: 3]."
+      },
+      {
+        id: "t2_c25",
+        meta: "Topic 2 • Concept 25",
+        text: "What policy framework is mandated under SDG Target 1.b?",
+        options: [
+          { text: "Policy frameworks based on pro-poor and gender-sensitive development strategies", correct: true },
+          { text: "Strict regressive consumption taxes that penalize basic food purchases", correct: false },
+          { text: "Deregulating commercial finance while abolishing minimum wage laws", correct: false },
+          { text: "Prioritizing debt service payments over public education and healthcare budgets", correct: false }
+        ],
+        rationale: "Topic 2, Concept 25 highlights Target 1.b calling for policy frameworks based on pro-poor and gender-sensitive development strategies[cite: 3].",
+        studySection: "Study Topic 2, Concept 25: Target 1.b (Pro-Poor & Gender-Sensitive Policy). Demands deliberate public investment frameworks designed to channel benefits directly to vulnerable women and low-income groups[cite: 3]."
+      },
+      {
+        id: "t2_c26",
+        meta: "Topic 2 • Concept 26",
+        text: "Which public spending areas serve as a tangible indicator of poverty-reduction commitment?",
+        options: [
+          { text: "Government expenditure on education, health, and social protection", correct: true },
+          { text: "Public expenditure on foreign military campaigns and weapon procurement", correct: false },
+          { text: "State subsidies provided to luxury tourist hotel conglomerates", correct: false },
+          { text: "Budget allocations dedicated to state banquet facilities", correct: false }
+        ],
+        rationale: "Topic 2, Concept 26 states government expenditure on education, health, and social protection shows if poverty commitments are concrete[cite: 3].",
+        studySection: "Study Topic 2, Concept 26: Government Spending. National budget allocations reflect genuine political priorities: funding schools, clinics, and safety nets ends poverty[cite: 3]."
+      },
+      {
+        id: "t2_c27",
+        meta: "Topic 2 • Concept 27",
+        text: "What role does Official Development Assistance (ODA) play in achieving SDG 1?",
+        options: [
+          { text: "Providing external resources to help least-developed countries fund anti-poverty policies", correct: true },
+          { text: "Replacing all domestic tax collection systems in developing economies", correct: false },
+          { text: "Funding political campaign advertising in donor countries", correct: false },
+          { text: "Purchasing commercial real estate assets in high-income nations", correct: false }
+        ],
+        rationale: "Topic 2, Concept 27 highlights that developing countries may require external development cooperation and ODA to implement programs[cite: 3].",
+        studySection: "Study Topic 2, Concept 27: International Development Assistance. ODA supplies vital grant and concessionary financing to bridge fiscal deficits in low-income states[cite: 2, 3]."
+      },
+      {
+        id: "t2_c28",
+        meta: "Topic 2 • Concept 28",
+        text: "Why is international cooperation necessary to eradicate poverty?",
+        options: [
+          { text: "Poverty has transboundary causes and consequences that extend beyond national borders.", correct: true },
+          { text: "Sovereign nations are legally barred from spending their own domestic budgets.", correct: false },
+          { text: "Poverty can only be measured by international foreign agencies.", correct: false },
+          { text: "No country possesses the legal authority to design domestic social programs.", correct: false }
+        ],
+        rationale: "Topic 2, Concept 28 affirms poverty's causes and effects cross borders, requiring global cooperation in finance, knowledge, and institutions[cite: 3].",
+        studySection: "Study Topic 2, Concept 28: International Cooperation. Global trade rules, debt relief, tax transparency, and technology transfers require multilateral coordination[cite: 3]."
+      },
+      {
+        id: "t2_c29",
+        meta: "Topic 2 • Concept 29",
+        text: "How does severe and persistent poverty threaten broader social and political systems?",
+        options: [
+          { text: "It damages the social fabric, constrains growth, harms the environment, and threatens stability.", correct: true },
+          { text: "It has zero impact on social stability or democratic institutions.", correct: false },
+          { text: "It automatically strengthens public trust in elected officials.", correct: false },
+          { text: "It eliminates civil conflict by suppressing political engagement.", correct: false }
+        ],
+        rationale: "Topic 2, Concept 29 warns that persistent poverty damages social cohesion, limits growth, harms ecology, and threatens political stability[cite: 3].",
+        studySection: "Study Topic 2, Concept 29: Poverty & Social Stability. Widespread poverty and inequality breed social unrest, crime, institutional breakdown, and civil conflict[cite: 3]."
+      },
+      {
+        id: "t2_c30",
+        meta: "Topic 2 • Concept 30",
+        text: "What fundamental shift defines the transition 'From Poverty Relief to Sustainable Inclusion'?",
+        options: [
+          { text: "Moving beyond temporary handouts toward livelihoods, social protection, rights, and resilience", correct: true },
+          { text: "Abolishing all long-term public social programs in favor of emergency cash handouts", correct: false },
+          { text: "Restricting anti-poverty initiatives to post-disaster food distribution only", correct: false },
+          { text: "Assigning poverty reduction solely to private philanthropic charities", correct: false }
+        ],
+        rationale: "Topic 2, Concept 30 states SDG 1 moves from temporary relief to changing the underlying conditions that reproduce vulnerability and deprivation[cite: 3].",
+        studySection: "Study Topic 2, Concept 30: Sustainable Inclusion. True eradication transforms structural systems: securing economic rights, resilience, and inclusive public policies[cite: 3]."
+      },
+      {
+        id: "t3_c1",
+        meta: "Topic 3 • Concept 1",
+        text: "What four core objectives comprise the central purpose of SDG 2?",
+        options: [
+          { text: "End hunger, achieve food security, improve nutrition, and promote sustainable agriculture", correct: true },
+          { text: "Subsidize agricultural exports, clear forests, mechanize farming, and lower grocery prices", correct: false },
+          { text: "Ban international food trade, nationalize farm land, ration sugar, and tax meat", correct: false },
+          { text: "Provide emergency rations, eliminate livestock, expand city boundaries, and irrigate deserts", correct: false }
+        ],
+        rationale: "Topic 3, Concept 1 notes SDG 2 seeks to end hunger, achieve food security, improve nutrition, and promote sustainable agriculture[cite: 4].",
+        studySection: "Study Topic 3, Concept 1: Purpose of SDG 2. Balances immediate human food needs today with preserving ecological systems to produce food tomorrow[cite: 4]."
+      },
+      {
+        id: "t3_c2",
+        meta: "Topic 3 • Concept 2",
+        text: "Why is ending hunger framed as a broader challenge than mere agricultural production volume?",
+        options: [
+          { text: "It requires addressing people's ability to obtain and afford adequate food year-round.", correct: true },
+          { text: "Food availability has zero relationship to global caloric reserves.", correct: false },
+          { text: "Food cannot be legally transported across provincial borders.", correct: false },
+          { text: "Hunger occurs solely when countries experience a complete domestic harvest failure.", correct: false }
+        ],
+        rationale: "Topic 3, Concept 2 notes ending hunger requires attention to food availability and people's ability to obtain food throughout the year[cite: 4].",
+        studySection: "Study Topic 3, Concept 2: Hunger & Poverty. Starvation often occurs amid adequate gross food supplies if poor citizens lack purchasing power or market access[cite: 4]."
+      },
+      {
+        id: "t3_c3",
+        meta: "Topic 3 • Concept 3",
+        text: "What human rights principle was reaffirmed by world leaders regarding food at Rio+20?",
+        options: [
+          { text: "Everyone's right to safe and nutritious food and the right to be free from hunger", correct: true },
+          { text: "The right of commercial agribusinesses to set unregulated commodity prices", correct: false },
+          { text: "The right of sovereign states to block food shipments during peace time", correct: false },
+          { text: "The obligation of citizens to purchase only domestically grown grains", correct: false }
+        ],
+        rationale: "Topic 3, Concept 3 states leaders reaffirmed everyone's right to safe, nutritious food and to be free from hunger as a matter of well-being[cite: 4].",
+        studySection: "Study Topic 3, Concept 3: Right to Adequate Food. Access to nutritious food is a fundamental human right, not merely a commercial commodity transaction[cite: 4]."
+      },
+      {
+        id: "t3_c4",
+        meta: "Topic 3 • Concept 4",
+        text: "What was a core ambition of the UN Zero Hunger Challenge?",
+        options: [
+          { text: "Year-round food access, sustainable food systems, smallholder productivity, and zero waste", correct: true },
+          { text: "Universal reliance on synthetic genetically engineered nutrition pills", correct: false },
+          { text: "Nationalizing all retail grocery supermarkets under state ownership", correct: false },
+          { text: "Banning family farms in favor of massive corporate agricultural zones", correct: false }
+        ],
+        rationale: "Topic 3, Concept 4 outlines the Zero Hunger Challenge: year-round access, sustainable food systems, smallholder productivity, and zero food loss/waste[cite: 4].",
+        studySection: "Study Topic 3, Concept 4: Zero Hunger Challenge. Multi-sector partnership addressing the entire food lifecycle from farm productivity to eliminating consumer waste[cite: 4]."
+      },
+      {
+        id: "t3_c5",
+        meta: "Topic 3 • Concept 5",
+        text: "What is guaranteed under SDG Target 2.1?",
+        options: [
+          { text: "Access for all people, especially the poor and infants, to safe, nutritious, and sufficient food year-round", correct: true },
+          { text: "A 10% reduction in retail supermarket processed food profit margins", correct: false },
+          { text: "Free imported canned rations distributed during national election campaigns", correct: false },
+          { text: "Mandatory daily vitamin injections for agricultural workers", correct: false }
+        ],
+        rationale: "Topic 3, Concept 5 states Target 2.1 seeks universal access, especially for the poor and vulnerable, to safe, nutritious, sufficient food all year[cite: 4].",
+        studySection: "Study Topic 3, Concept 5: Target 2.1 (Food Security). Reliable, continuous access to sufficient nutrition is required, not merely the statistical existence of food[cite: 4]."
+      },
+      {
+        id: "t3_c6",
+        meta: "Topic 3 • Concept 6",
+        text: "What two indicators are monitored under SDG 2 to measure food insecurity?",
+        options: [
+          { text: "Prevalence of undernourishment and moderate or severe food insecurity", correct: true },
+          { text: "National tractor manufacturing volume and fertilizer chemical sales", correct: false },
+          { text: "Wholesale grain market futures prices and commercial hedge fund profits", correct: false },
+          { text: "Retail bakery revenues and restaurant density in capital cities", correct: false }
+        ],
+        rationale: "Topic 3, Concept 6 explains SDG 2 monitors both the prevalence of undernourishment and moderate or severe food insecurity[cite: 4].",
+        studySection: "Study Topic 3, Concept 6: Measuring Food Insecurity. Measures dietary energy deficit (undernourishment) alongside experiential access barriers (food insecurity scale)[cite: 4]."
+      },
+      {
+        id: "t3_c7",
+        meta: "Topic 3 • Concept 7",
+        text: "Why does Concept 7 emphasize that ending hunger does not automatically eliminate malnutrition?",
+        options: [
+          { text: "Malnutrition also includes stunting, wasting, micronutrient anemia, and overweight/obesity.", correct: true },
+          { text: "Malnutrition is an exclusively genetic condition unaffected by food intake.", correct: false },
+          { text: "Consuming pure refined sugar provides complete human nutrition.", correct: false },
+          { text: "Malnutrition only occurs in high-income industrialized nations.", correct: false }
+        ],
+        rationale: "Topic 3, Concept 7 clarifies that ending hunger does not eliminate malnutrition, which encompasses stunting, wasting, micronutrient anemia, and obesity[cite: 4].",
+        studySection: "Study Topic 3, Concept 7: Malnutrition Forms. A population can have enough calories to avoid hunger while remaining severely malnourished from micronutrient-poor diets[cite: 4]."
+      },
+      {
+        id: "t3_c8",
+        meta: "Topic 3 • Concept 8",
+        text: "Why is nutrition during the 'First 1,000 Days' considered decisive for human development?",
+        options: [
+          { text: "Nutrition from pregnancy through age two is crucial for lifelong cognitive and physical growth.", correct: true },
+          { text: "Children are biologically incapable of digesting micronutrients after age two.", correct: false },
+          { text: "Brain development only begins after a child reaches their third birthday.", correct: false },
+          { text: "Physical stunting can be completely reversed at any point during adulthood.", correct: false }
+        ],
+        rationale: "Topic 3, Concept 8 explains nutrition from pregnancy through a child's second birthday is crucial, requiring joint maternal and infant care[cite: 4].",
+        studySection: "Study Topic 3, Concept 8: The First 1,000 Days. Deficits during this critical window produce permanent, irreversible damage to cognitive capacity and physical stature[cite: 4]."
+      },
+      {
+        id: "t3_c9",
+        meta: "Topic 3 • Concept 9",
+        text: "What danger is highlighted by the concept of 'Nutrition beyond Calories'?",
+        options: [
+          { text: "Diets lacking micronutrients cause hidden hunger, developmental deficits, and chronic illnesses.", correct: true },
+          { text: "Consuming micronutrients prevents the human body from processing dietary energy.", correct: false },
+          { text: "Carbohydrates provide all necessary vitamins required for human organ function.", correct: false },
+          { text: "Caloric intake has zero measurable impact on human physical survival.", correct: false }
+        ],
+        rationale: "Topic 3, Concept 9 states nutrition involves more than calories; micronutrient deficiencies and poor diets drive developmental harm and diseases[cite: 4].",
+        studySection: "Study Topic 3, Concept 9: Micronutrients & Diet Quality. High-calorie diets low in vitamins, iron, and zinc lead to hidden hunger, chronic disease, and impaired immunity[cite: 4]."
+      },
+      {
+        id: "t3_c10",
+        meta: "Topic 3 • Concept 10",
+        text: "Why is nutrition described as an 'Interconnected Issue' in the 2030 Agenda?",
+        options: [
+          { text: "It is directly linked with clean water, sanitation, health care, education, and agriculture.", correct: true },
+          { text: "Nutritional outcomes are determined strictly by chemical fertilizer subsidies.", correct: false },
+          { text: "Clean water has zero impact on human bodily nutrient absorption.", correct: false },
+          { text: "Education levels have no measurable correlation with maternal child feeding practices.", correct: false }
+        ],
+        rationale: "Topic 3, Concept 10 notes nutrition links to water, sanitation, education, health, agriculture, and jobs, requiring multi-sector action[cite: 4].",
+        studySection: "Study Topic 3, Concept 10: Interconnected Nutrition. Unsafe drinking water causes diarrhea and nutrient loss, proving water (SDG 6) and health (SDG 3) are essential to nutrition[cite: 4]."
+      },
+      {
+        id: "t3_c11",
+        meta: "Topic 3 • Concept 11",
+        text: "What dual challenge can be addressed simultaneously by increasing rural agricultural incomes?",
+        options: [
+          { text: "Extreme poverty (SDG 1) and global hunger (SDG 2)", correct: true },
+          { text: "Urban traffic congestion and commercial airport runway noise", correct: false },
+          { text: "High-tech industrial manufacturing deficits and space exploration costs", correct: false },
+          { text: "Marine container freight shortages and stock market volatility", correct: false }
+        ],
+        rationale: "Topic 3, Concept 11 points out that poverty and hunger are predominantly rural; raising rural productivity solves both challenges together[cite: 4].",
+        studySection: "Study Topic 3, Concept 11: Rural Poverty & Hunger. Smallholders comprise a large share of the hungry; helping them grow more food boosts nutrition and household wealth[cite: 4]."
+      },
+      {
+        id: "t3_c12",
+        meta: "Topic 3 • Concept 12",
+        text: "What explicit numerical target is set under SDG Target 2.3 for small-scale food producers?",
+        options: [
+          { text: "Double the agricultural productivity and incomes of small-scale food producers by 2030", correct: true },
+          { text: "Triple the tax obligations of family farmers, fishers, and pastoralists", correct: false },
+          { text: "Consolidate all family farming plots into large corporate agribusiness estates", correct: false },
+          { text: "Relocate 50% of rural pastoralists into metropolitan industrial centers", correct: false }
+        ],
+        rationale: "Topic 3, Concept 12 states Target 2.3 seeks to double the productivity and incomes of small-scale food producers, recognizing women and Indigenous groups[cite: 4].",
+        studySection: "Study Topic 3, Concept 12: Target 2.3 (Smallholder Productivity). Commits to a 100% increase (doubling) in output and earnings for family farmers, pastoralists, and fishers[cite: 4]."
+      },
+      {
+        id: "t3_c13",
+        meta: "Topic 3 • Concept 13",
+        text: "What resources must small-scale food producers access to achieve sustainable inclusion?",
+        options: [
+          { text: "Secure access to land, inputs, knowledge, financial services, and markets", correct: true },
+          { text: "Compulsory chemical pesticide contracts with multinational corporations", correct: false },
+          { text: "Exclusive commercial marketing rights granted solely to state monopolies", correct: false },
+          { text: "Unregulated high-interest informal credit from village moneylenders", correct: false }
+        ],
+        rationale: "Topic 3, Concept 13 highlights that small producers need equitable access to land, inputs, knowledge, finance, and markets to boost yields[cite: 4].",
+        studySection: "Study Topic 3, Concept 13: Productive Resources. Without secure land tenure, fair credit, and transport to markets, small farmers remain trapped in subsistence poverty[cite: 4]."
+      },
+      {
+        id: "t3_c14",
+        meta: "Topic 3 • Concept 14",
+        text: "What is the core principle of 'Sustainable Agriculture' under SDG 2?",
+        options: [
+          { text: "Increasing farm productivity while minimizing waste, chemical pollution, and ecosystem damage", correct: true },
+          { text: "Maximizing short-term crop yields regardless of long-term soil exhaustion", correct: false },
+          { text: "Transitioning all agricultural operations to indoor industrial aeroponic labs", correct: false },
+          { text: "Clearing native primary rainforests to expand cattle grazing acreage", correct: false }
+        ],
+        rationale: "Topic 3, Concept 14 explains agriculture must become more productive while becoming less wasteful and environmentally damaging[cite: 4].",
+        studySection: "Study Topic 3, Concept 14: Sustainable Agriculture. Integrates production and consumption, safeguarding environmental systems so future generations can feed themselves[cite: 4]."
+      },
+      {
+        id: "t3_c15",
+        meta: "Topic 3 • Concept 15",
+        text: "What agricultural practices are mandated under SDG Target 2.4?",
+        options: [
+          { text: "Practices that increase productivity while maintaining ecosystems and strengthening climate adaptation", correct: true },
+          { text: "Continuous monocropping utilizing heavy synthetic chemical defoliants", correct: false },
+          { text: "Excessive deep-well aquifer extraction with zero hydrological oversight", correct: false },
+          { text: "Burning crop residue and topsoil to clear acreage rapidly", correct: false }
+        ],
+        rationale: "Topic 3, Concept 15 states Target 2.4 calls for resilient practices that maintain ecosystems and adapt to climate change and disasters[cite: 4].",
+        studySection: "Study Topic 3, Concept 15: Target 2.4 (Resilient Farming). Builds agricultural resilience against droughts, floods, and sea-level rise while restoring degraded soil health[cite: 4]."
+      },
+      {
+        id: "t3_c16",
+        meta: "Topic 3 • Concept 16",
+        text: "Why is soil health considered a critical food-system resource under SDG 2 and SDG 15?",
+        options: [
+          { text: "Productive land and healthy soil are finite, vulnerable inputs that underpin global food security.", correct: true },
+          { text: "Soil quality has zero scientific impact on agricultural crop nutrient density.", correct: false },
+          { text: "Degraded, eroded soil produces higher crop yields than fertile biodiverse topsoil.", correct: false },
+          { text: "Topsoil can be fully regenerated artificially within 24 hours using commercial fertilizers.", correct: false }
+        ],
+        rationale: "Topic 3, Concept 16 explains healthy soil and land are fundamental inputs; growing scarcity and degradation make sustainable land management vital[cite: 4].",
+        studySection: "Study Topic 3, Concept 16: Soil & Land Resources. Topsoil erosion, salinization, and nutrient depletion directly threaten future global food production capacities[cite: 4]."
+      },
+      {
+        id: "t3_c17",
+        meta: "Topic 3 • Concept 17",
+        text: "What dual benefit is generated by restoring degraded agricultural land?",
+        options: [
+          { text: "It improves food security while reducing pressure to clear forests for new farmland.", correct: true },
+          { text: "It accelerates regional deforestation while expanding municipal landfills.", correct: false },
+          { text: "It permanently eliminates the need for agricultural crop irrigation.", correct: false },
+          { text: "It lowers agricultural employment by converting farms into commercial highways.", correct: false }
+        ],
+        rationale: "Topic 3, Concept 17 highlights that restoring degraded land boosts food security, protects forests, and generates climate mitigation benefits[cite: 4].",
+        studySection: "Study Topic 3, Concept 17: Restoring Degraded Land. Rehabilitating depleted farmland increases food yields without cutting down carbon-rich primary forests[cite: 4]."
+      },
+      {
+        id: "t3_c18",
+        meta: "Topic 3 • Concept 18",
+        text: "What water management practices are prioritized to sustain farming in dry areas (SDG 6)?",
+        options: [
+          { text: "Improved irrigation efficiency, rainwater storage, and careful hydrological management", correct: true },
+          { text: "Unrestricted pumping of ancient non-renewable groundwater aquifers", correct: false },
+          { text: "Diverting all regional freshwater into industrial mining processing facilities", correct: false },
+          { text: "Banning agriculture entirely across all semi-arid geographic zones", correct: false }
+        ],
+        rationale: "Topic 3, Concept 18 notes agriculture relies heavily on scarce water, making improved irrigation and careful storage essential in dry regions[cite: 4].",
+        studySection: "Study Topic 3, Concept 18: Water Management in Farming. Drip irrigation, canal lining, and rainwater harvesting protect agricultural yields against climate drought[cite: 4]."
+      },
+      {
+        id: "t3_c19",
+        meta: "Topic 3 • Concept 19",
+        text: "How do climate-resilient crop varieties support food security under SDG 2 and SDG 13?",
+        options: [
+          { text: "They help farming communities withstand rising temperatures, shifting rainfall, and pest pressures.", correct: true },
+          { text: "They allow crops to grow in complete darkness without sunlight or water.", correct: false },
+          { text: "They eliminate the need for agricultural farm labor and machinery.", correct: false },
+          { text: "They permanently eradicate all insect biodiversity across rural ecosystems.", correct: false }
+        ],
+        rationale: "Topic 3, Concept 19 states drought-resistant crops help communities adapt to changing environmental conditions, temperatures, and pests[cite: 4].",
+        studySection: "Study Topic 3, Concept 19: Climate-Resilient Crops. Agronomic research into drought-, flood-, and heat-tolerant seeds prevents catastrophic harvest failures[cite: 4]."
+      },
+      {
+        id: "t3_c20",
+        meta: "Topic 3 • Concept 20",
+        text: "What direct threats does climate change pose to global food systems?",
+        options: [
+          { text: "Shifting precipitation, rising temperatures, and new pests threaten productivity and stability.", correct: true },
+          { text: "It creates universal crop surpluses across all tropical developing nations.", correct: false },
+          { text: "It cools equatorial zones, eliminating the risk of extreme weather disasters.", correct: false },
+          { text: "It has zero measurable impact on marine fisheries or terrestrial agriculture.", correct: false }
+        ],
+        rationale: "Topic 3, Concept 20 affirms climate shifts in temperature, precipitation, and pests threaten agricultural output and food stability[cite: 4].",
+        studySection: "Study Topic 3, Concept 20: Climate & Food Security. Building resilient local food systems prevents global price spikes and localized famines during extreme weather[cite: 4]."
+      },
+      {
+        id: "t3_c21",
+        meta: "Topic 3 • Concept 21",
+        text: "What is the primary objective of SDG Target 2.5 regarding agricultural biodiversity?",
+        options: [
+          { text: "Maintaining the genetic diversity of seeds, cultivated plants, farmed animals, and wild species", correct: true },
+          { text: "Standardizing a single global hybrid corn seed variety across all continents", correct: false },
+          { text: "Eliminating wild ancestral plant species to prevent weed contamination", correct: false },
+          { text: "Replacing all traditional livestock breeds with a single cloned animal variety", correct: false }
+        ],
+        rationale: "Topic 3, Concept 21 notes Target 2.5 seeks to maintain genetic diversity of seeds, crops, and animals to keep food systems adaptable[cite: 4].",
+        studySection: "Study Topic 3, Concept 21: Target 2.5 (Genetic Diversity). Broad genetic diversity provides the biological raw material needed to breed disease-resistant crops in the future[cite: 4]."
+      },
+      {
+        id: "t3_c22",
+        meta: "Topic 3 • Concept 22",
+        text: "What institutions contribute to preserving genetic resources for food and agriculture under Target 2.5?",
+        options: [
+          { text: "National, regional, and international seed and gene banks", correct: true },
+          { text: "Commercial shopping mall frozen food storage lockers", correct: false },
+          { text: "Central bank gold bullion security storage vaults", correct: false },
+          { text: "Municipal wastewater sediment holding tanks", correct: false }
+        ],
+        rationale: "Topic 3, Concept 22 highlights seed and gene banks preserving genetic resources, paired with fair access to benefits and traditional knowledge[cite: 4].",
+        studySection: "Study Topic 3, Concept 22: Seed and Gene Banks. Gene banks safeguard endangered plant varieties ex-situ, protecting humanity against widespread crop blight[cite: 4]."
+      },
+      {
+        id: "t3_c23",
+        meta: "Topic 3 • Concept 23",
+        text: "How does traditional farmer knowledge contribute to sustainable agriculture?",
+        options: [
+          { text: "It provides proven generational methods for managing soil, water, and pests when merged with science.", correct: true },
+          { text: "It is obsolete and should be legally banned in favor of chemical inputs.", correct: false },
+          { text: "It prevents rural farming communities from adopting digital communication tools.", correct: false },
+          { text: "It requires farmers to abandon all modern crop rotation techniques.", correct: false }
+        ],
+        rationale: "Topic 3, Concept 23 confirms combining traditional farming knowledge with modern agronomy creates productive, sound agricultural systems[cite: 4].",
+        studySection: "Study Topic 3, Concept 23: Traditional Farmer Knowledge. Indigenous and generational agricultural practices offer vital insights into soil conservation and biological pest control[cite: 4]."
+      },
+      {
+        id: "t3_c24",
+        meta: "Topic 3 • Concept 24",
+        text: "What investments are required to help agriculture respond effectively to environmental change?",
+        options: [
+          { text: "Continued funding for agricultural research, extension services, and technology innovation", correct: true },
+          { text: "Subsidizing unrefined fossil fuels for commercial shipping fleets", correct: false },
+          { text: "Abolishing all agronomy departments in public research universities", correct: false },
+          { text: "Eliminating government oversight of commercial pesticide runoff", correct: false }
+        ],
+        rationale: "Topic 3, Concept 24 states food security requires investment in research, extension services, and innovation to adapt to environmental shifts[cite: 4].",
+        studySection: "Study Topic 3, Concept 24: Agricultural Research & Tech. Agricultural extension services bring scientific innovations directly to small farmers in rural fields[cite: 4]."
+      },
+      {
+        id: "t3_c25",
+        meta: "Topic 3 • Concept 25",
+        text: "What public investment is prioritized under SDG Target 2.a to increase productive capacity?",
+        options: [
+          { text: "Rural infrastructure, agricultural research facilities, and extension networks", correct: true },
+          { text: "Urban luxury entertainment complexes in metropolitan centers", correct: false },
+          { text: "Offshore commercial banking tax havens", correct: false },
+          { text: "Subsidies for imported packaged junk food products", correct: false }
+        ],
+        rationale: "Topic 3, Concept 25 states Target 2.a identifies rural infrastructure and research as vital for connecting producers with markets and services[cite: 4].",
+        studySection: "Study Topic 3, Concept 25: Target 2.a (Rural Infrastructure). Rural feeder roads, electrification, and cold storage connect remote farmers to commercial buyers[cite: 4]."
+      },
+      {
+        id: "t3_c26",
+        meta: "Topic 3 • Concept 26",
+        text: "Why is increasing agricultural crop yields alone insufficient to secure global food security?",
+        options: [
+          { text: "Because significant food is lost post-harvest or wasted at retail and household levels.", correct: true },
+          { text: "Because human caloric needs drop automatically as agricultural harvests expand.", correct: false },
+          { text: "Because food cannot be safely stored in warehouses for longer than 48 hours.", correct: false },
+          { text: "Because international trade laws prohibit the transport of grain across borders.", correct: false }
+        ],
+        rationale: "Topic 3, Concept 26 warns increasing production fails if food is lost post-harvest or wasted at retail and consumer stages[cite: 4].",
+        studySection: "Study Topic 3, Concept 26: Food Loss & Waste. Tackling supply chain leakage (storage rot, transit spoilage) and retail waste is vital to feeding humanity[cite: 4]."
+      },
+      {
+        id: "t3_c27",
+        meta: "Topic 3 • Concept 27",
+        text: "What international trade reform is called for under SDG Target 2.b?",
+        options: [
+          { text: "Correcting and preventing trade restrictions and distortions, such as export subsidies, in world agricultural markets", correct: true },
+          { text: "Imposing universal punitive export tariffs on all developing country crops", correct: false },
+          { text: "Banning the cross-border transport of all agricultural commodities", correct: false },
+          { text: "Fixing commodity prices by executive decree in high-income nations", correct: false }
+        ],
+        rationale: "Topic 3, Concept 27 highlights Target 2.b calling for correcting trade distortions and restrictions in global agricultural markets[cite: 4].",
+        studySection: "Study Topic 3, Concept 27: Target 2.b (Trade Distortions). Agricultural export subsidies in wealthy countries depress global prices, harming developing world farmers[cite: 4]."
+      },
+      {
+        id: "t3_c28",
+        meta: "Topic 3 • Concept 28",
+        text: "What market destabilization does SDG Target 2.c seek to curb to protect food access?",
+        options: [
+          { text: "Extreme food-price volatility through transparent market information and reserves", correct: true },
+          { text: "The expansion of direct farm-to-consumer farmers' markets", correct: false },
+          { text: "Long-term grain storage in public emergency granaries", correct: false },
+          { text: "Digital mobile payment adoption by rural agricultural merchants", correct: false }
+        ],
+        rationale: "Topic 3, Concept 28 highlights Target 2.c emphasizing functioning commodity markets and timely data to limit extreme food-price volatility[cite: 4].",
+        studySection: "Study Topic 3, Concept 28: Target 2.c (Price Volatility). Rapid price spikes make basic food unaffordable for poor families; market transparency prevents panic hoarding[cite: 4]."
+      },
+      {
+        id: "t3_c29",
+        meta: "Topic 3 • Concept 29",
+        text: "Why is 'Integrated Food-System Decision-Making' necessary under SDG 2?",
+        options: [
+          { text: "Agriculture interacts with water, energy, and land, creating trade-offs and synergies.", correct: true },
+          { text: "Agricultural policy operates in complete isolation from freshwater supplies.", correct: false },
+          { text: "Energy generation has zero scientific connection to agricultural fertilizer manufacturing.", correct: false },
+          { text: "Land use planning has no impact on global carbon emissions or climate change.", correct: false }
+        ],
+        rationale: "Topic 3, Concept 29 stresses agriculture interacts with water, energy, land, and climate, demanding integrated choices to avoid unintended harms[cite: 4].",
+        studySection: "Study Topic 3, Concept 29: Water-Energy-Food Nexus. Improving crop yields must not deplete freshwater aquifers (SDG 6) or drive deforestation and carbon release (SDG 13/15)[cite: 4]."
+      },
+      {
+        id: "t3_c30",
+        meta: "Topic 3 • Concept 30",
+        text: "How does Concept 30 summarize food security under the 2030 Agenda?",
+        options: [
+          { text: "A resilient system where nutrition, livelihoods, agriculture, and ecology reinforce one another", correct: true },
+          { text: "A narrow mechanical problem solved entirely by increasing chemical fertilizer imports", correct: false },
+          { text: "An emergency issue addressed solely through international foreign food aid drops", correct: false },
+          { text: "A temporary crisis that will end automatically without environmental sustainability", correct: false }
+        ],
+        rationale: "Topic 3, Concept 30 concludes ending hunger requires a resilient system where nutrition, livelihoods, agriculture, and sustainability reinforce each other[cite: 4].",
+        studySection: "Study Topic 3, Concept 30: System of Interdependencies. SDG 2 connects farming with poverty, gender, health, and climate; true food security requires a resilient systemic approach[cite: 4]."
+      }
+    ];
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    let correctScore = 0;
+    const completedSet = new Set();
+    const missedSet = new Set();
+    const totalQuestions = rawQuestions.length;
+
+    function updateScoreDisplay() {
+      document.getElementById('answered-count').textContent = completedSet.size;
+      document.getElementById('score-display').textContent = correctScore;
+      document.getElementById('score-pct').textContent = Math.round((correctScore / totalQuestions) * 100) + '%';
+    }
+
+    function addToTopReviewer(qObj) {
+      if (missedSet.has(qObj.id)) return;
+      missedSet.add(qObj.id);
+
+      const panel = document.getElementById('top-reviewer-panel');
+      const container = document.getElementById('missed-items-container');
+      const countEl = document.getElementById('missed-count');
+
+      panel.classList.add('show');
+      countEl.textContent = missedSet.size;
+
+      const reviewCard = document.createElement('div');
+      reviewCard.className = 'missed-review-card';
+      reviewCard.id = `top-rev-${qObj.id}`;
+      reviewCard.innerHTML = `
+        <span class="tag">Missed Concept • ${qObj.meta}</span>
+        <div class="question-title">${qObj.text}</div>
+        <div class="study-text">${qObj.studySection}</div>
+      `;
+      container.appendChild(reviewCard);
+    }
+
+    function renderExam() {
+      const mount = document.getElementById('quiz-mount');
+      const shuffledQuestions = shuffleArray([...rawQuestions]);
+
+      shuffledQuestions.forEach((q, idx) => {
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = q.id;
+
+        let content = `
+          <span class="card-meta">#${idx + 1} • ${q.meta} • Multiple Choice</span>
+          <p class="q-text">${q.text}</p>
+          <div class="quiz-options">
+        `;
+
+        const shuffledOptions = shuffleArray([...q.options]);
+        shuffledOptions.forEach(opt => {
+          content += `<button class="quiz-btn" onclick="checkChoice(this, ${opt.correct}, '${q.id}')">${opt.text}</button>`;
+        });
+
+        content += `
+          </div>
+          <div class="rationale" id="rat-${q.id}"><strong>Exam Rationale:</strong> ${q.rationale}</div>
+          <div class="study-review-box" id="study-${q.id}">
+            <strong>Target Study Review Section:</strong>
+            ${q.studySection}
+          </div>
+        `;
+
+        card.innerHTML = content;
+        mount.appendChild(card);
+      });
+    }
+
+    function checkChoice(buttonEl, isCorrect, cardId) {
+      if (completedSet.has(cardId)) return;
+      completedSet.add(cardId);
+
+      const card = document.getElementById(cardId);
+      const buttons = card.querySelectorAll('.quiz-btn');
+      const rationale = card.querySelector('.rationale');
+      const studyBox = card.querySelector('.study-review-box');
+      const qObj = rawQuestions.find(q => q.id === cardId);
+
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.classList.remove('correct', 'wrong');
+      });
+
+      if (isCorrect) {
+        buttonEl.classList.add('correct');
+        correctScore++;
+      } else {
+        buttonEl.classList.add('wrong');
+        buttons.forEach(btn => {
+          if (btn.getAttribute('onclick').includes('true')) {
+            btn.classList.add('correct');
+          }
+        });
+        if (studyBox) studyBox.classList.add('show');
+        addToTopReviewer(qObj);
+      }
+
+      if (rationale) rationale.classList.add('show');
+      updateScoreDisplay();
+    }
+
+    window.onload = renderExam;
+  </script>
+</body>
+</html>
